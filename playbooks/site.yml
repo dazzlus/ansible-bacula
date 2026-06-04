@@ -1,0 +1,6 @@
+---
+- import_playbook: deploy-postgresql.yml
+- import_playbook: deploy-director.yml
+- import_playbook: deploy-storage.yml
+- import_playbook: deploy-clients.yml
+- import_playbook: configure-firewall.yml
