@@ -1,0 +1,4 @@
+storage_name: "storage-sd"
+storage_ip: "192.168.91.20"
+storage_password: "bacula"
+archive_device: "/backup"

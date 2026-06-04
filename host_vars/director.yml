@@ -1,0 +1,5 @@
+director_name: "bacula-director"
+director_ip: "192.168.91.10"
+database_name: "bacula"
+database_user: "bacula"
+database_password: "bacula"
