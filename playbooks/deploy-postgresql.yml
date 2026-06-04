@@ -1,0 +1,45 @@
+- name: Setup PostgreSQL for Bacula on Director host
+  hosts: bacula_director
+  become: yes
+  vars_files:
+    - ../group_vars/all.yml
+  tasks:
+    - name: Install PostgreSQL and required packages
+      apt:
+        name:
+          - postgresql
+          - postgresql-contrib
+          - python3-psycopg2
+        state: present
+        update_cache: yes
+
+    - name: Ensure PostgreSQL is running
+      service:
+        name: postgresql
+        state: started
+        enabled: yes
+
+    - name: Create database with SQL_ASCII encoding
+      become_user: postgres
+      community.postgresql.postgresql_db:
+        name: "{{ database_name }}"
+        encoding: "SQL_ASCII"
+        lc_collate: "C"
+        lc_ctype: "C"
+        template: "template0"
+        state: present
+
+    - name: Create database user
+      become_user: postgres
+      community.postgresql.postgresql_user:
+        name: "{{ database_user }}"
+        password: "{{ database_password }}"
+        role_attr_flags: CREATEDB,LOGIN
+        state: present
+
+    - name: Apply Bacula PostgreSQL schema
+      become_user: postgres
+      community.postgresql.postgresql_db:
+        name: "{{ database_name }}"
+        state: present
+        target: /usr/share/bacula-director/postgresql/create_tables.sql
