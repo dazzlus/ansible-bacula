@@ -1,0 +1,33 @@
+- name: Configure UFW on all Bacula nodes
+  hosts: all
+  become: yes
+  tasks:
+    - name: Allow SSH connections
+      community.general.ufw:
+        rule: allow
+        name: OpenSSH
+
+    - name: Allow Bacula Director port (on Director)
+      community.general.ufw:
+        rule: allow
+        port: '9101'
+        proto: tcp
+      when: "'bacula_director' in group_names"
+
+    - name: Allow Bacula Storage Daemon port (on Storage)
+      community.general.ufw:
+        rule: allow
+        port: '9103'
+        proto: tcp
+      when: "'bacula_storage' in group_names"
+
+    - name: Allow Bacula File Daemon port (on Clients)
+      community.general.ufw:
+        rule: allow
+        port: '9102'
+        proto: tcp
+      when: "'bacula_clients' in group_names"
+
+    - name: Enable UFW
+      community.general.ufw:
+        state: enabled
