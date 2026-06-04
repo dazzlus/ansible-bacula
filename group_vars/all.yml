@@ -1,0 +1,7 @@
+bacula_version: "9.6.7"
+director_name: "bacula-director"
+storage_name: "storage-sd"
+fd_name: "client-fd"
+database_name: "bacula"
+database_user: "bacula"
+database_password: "bacula"
