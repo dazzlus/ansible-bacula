@@ -1,0 +1,18 @@
+Director {
+  Name = {{ director_name }}
+  DIRport = 9101
+  QueryFile = "/etc/bacula/scripts/query.sql"
+  WorkingDirectory = "/var/lib/bacula"
+  PidDirectory = "/run/bacula"
+  Maximum Concurrent Jobs = 20
+  Password = "{{ console_password }}"
+  Messages = Daemon
+  DirAddress = 127.0.0.1
+}
+
+Catalog {
+  Name = MyCatalog
+  dbname = "{{ database_name }}"
+  dbuser = "{{ database_user }}"
+  dbpassword = "{{ database_password }}"
+}

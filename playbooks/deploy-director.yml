@@ -1,0 +1,32 @@
+- name: Deploy Bacula Director
+  hosts: bacula_director
+  become: yes
+  vars_files:
+    - ../group_vars/all.yml
+  tasks:
+    - name: Install Bacula Director and Console
+      apt:
+        name:
+          - bacula-director-pgsql
+          - bacula-console
+        state: present
+
+    - name: Deploy bacula-dir.conf from template
+      template:
+        src: ../templates/bacula-dir.conf.j2
+        dest: /etc/bacula/bacula-dir.conf
+        owner: bacula
+        group: bacula
+        mode: '0640'
+      notify: restart bacula-director
+
+    - name: Ensure Bacula Director is running
+      service:
+        name: bacula-director
+        state: started
+        enabled: yes
+  handlers:
+    - name: restart bacula-director
+      service:
+        name: bacula-director
+        state: restarted
