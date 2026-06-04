@@ -1,0 +1,25 @@
+Storage {
+  Name = {{ storage_name }}
+  SDPort = 9103
+  WorkingDirectory = "/var/lib/bacula"
+  Pid Directory = "/run/bacula"
+  Plugin Directory = "/usr/lib/bacula"
+  Maximum Concurrent Jobs = 20
+  SDAddress = 0.0.0.0
+}
+
+Director {
+  Name = {{ director_name }}
+  Password = "{{ storage_password }}"
+}
+
+Device {
+  Name = FileStorage
+  Media Type = File1
+  Archive Device = /backup
+  LabelMedia = yes
+  Random Access = yes
+  AutomaticMount = yes
+  RemovableMedia = no
+  AlwaysOpen = no
+}

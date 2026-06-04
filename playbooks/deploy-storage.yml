@@ -1,0 +1,38 @@
+- name: Deploy Bacula Storage Daemon
+  hosts: bacula_storage
+  become: yes
+  vars_files:
+    - ../group_vars/all.yml
+  tasks:
+    - name: Install Bacula Storage Daemon
+      apt:
+        name: bacula-sd
+        state: present
+
+    - name: Ensure backup directory exists
+      file:
+        path: /backup
+        state: directory
+        owner: bacula
+        group: bacula
+        mode: '0755'
+
+    - name: Deploy bacula-sd.conf from template
+      template:
+        src: ../templates/bacula-sd.conf.j2
+        dest: /etc/bacula/bacula-sd.conf
+        owner: bacula
+        group: bacula
+        mode: '0640'
+      notify: restart bacula-sd
+
+    - name: Ensure Bacula Storage Daemon is running
+      service:
+        name: bacula-sd
+        state: started
+        enabled: yes
+  handlers:
+    - name: restart bacula-sd
+      service:
+        name: bacula-sd
+        state: restarted
