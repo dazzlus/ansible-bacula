@@ -1,0 +1,12 @@
+FileDaemon {
+  Name = {{ fd_name }}
+  FDport = 9102
+  WorkingDirectory = /var/lib/bacula
+  Pid Directory = /run/bacula
+  Maximum Concurrent Jobs = 20
+}
+
+Director {
+  Name = {{ director_name }}
+  Password = "{{ fd_password }}"
+}

@@ -1,0 +1,30 @@
+- name: Deploy Bacula File Daemon on clients
+  hosts: bacula_clients
+  become: yes
+  vars_files:
+    - ../group_vars/all.yml
+  tasks:
+    - name: Install Bacula File Daemon
+      apt:
+        name: bacula-fd
+        state: present
+
+    - name: Deploy bacula-fd.conf from template
+      template:
+        src: ../templates/bacula-fd.conf.j2
+        dest: /etc/bacula/bacula-fd.conf
+        owner: bacula
+        group: bacula
+        mode: '0640'
+      notify: restart bacula-fd
+
+    - name: Ensure Bacula File Daemon is running
+      service:
+        name: bacula-fd
+        state: started
+        enabled: yes
+  handlers:
+    - name: restart bacula-fd
+      service:
+        name: bacula-fd
+        state: restarted
