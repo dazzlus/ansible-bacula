@@ -1,6 +1,6 @@
 - name: Deploy Bacula Director
   hosts: bacula_director
-  become: yes
+  become: true
   vars_files:
     - ../group_vars/all.yml
   tasks:

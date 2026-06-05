@@ -1,6 +1,6 @@
 - name: Setup PostgreSQL for Bacula on Director host
   hosts: bacula_director
-  become: yes
+  become: true
   vars_files:
     - ../group_vars/all.yml
   tasks:

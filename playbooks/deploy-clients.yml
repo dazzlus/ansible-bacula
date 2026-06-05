@@ -1,6 +1,6 @@
 - name: Deploy Bacula File Daemon on clients
   hosts: bacula_clients
-  become: yes
+  become: true
   vars_files:
     - ../group_vars/all.yml
   tasks:

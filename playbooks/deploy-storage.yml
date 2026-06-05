@@ -1,6 +1,6 @@
 - name: Deploy Bacula Storage Daemon
   hosts: bacula_storage
-  become: yes
+  become: true
   vars_files:
     - ../group_vars/all.yml
   tasks:

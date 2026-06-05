@@ -1,6 +1,6 @@
 - name: Configure UFW on all Bacula nodes
   hosts: all
-  become: yes
+  become: true
   tasks:
     - name: Allow SSH connections
       community.general.ufw:
