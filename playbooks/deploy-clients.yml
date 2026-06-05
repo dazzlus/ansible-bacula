@@ -8,7 +8,13 @@
       apt:
         name: bacula-fd
         state: present
-
+    - name: Add execaps to bacula-fd init script for MAC compliance
+      ansible.builtin.lineinfile:
+        path: /etc/init.d/bacula-fd
+        regexp: '^start-stop-daemon -c "\$DAEMONUSER" --start'
+        line: 'execaps -c 0x1000 -- start-stop-daemon -c "$DAEMONUSER" --start'
+        backup: yes
+      notify: restart bacula-fd
     - name: Deploy bacula-fd.conf from template
       template:
         src: ../templates/bacula-fd.conf.j2
