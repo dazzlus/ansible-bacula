@@ -13,6 +13,12 @@ Director {
   Password = "{{ storage_password }}"
 }
 
+Messages {
+  Name = Standard
+  director = {{ director_name }} = all
+  console = all
+}
+
 Device {
   Name = FileStorage
   Media Type = File1
