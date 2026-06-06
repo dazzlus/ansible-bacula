@@ -25,6 +25,13 @@
         name: bacula-director
         state: started
         enabled: yes
+    - name: Deploy bconsole.conf from template
+      ansible.builtin.template:
+        src: ../templates/bconsole.conf.j2
+        dest: /etc/bacula/bconsole.conf
+        owner: root
+        group: bacula
+        mode: '0640'
   handlers:
     - name: restart bacula-director
       service:
