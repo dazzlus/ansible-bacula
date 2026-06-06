@@ -4,6 +4,12 @@
   vars_files:
     - ../group_vars/all.yml
   tasks:
+    - name: Remove broken repository-devel from sources.list
+      ansible.builtin.lineinfile:
+        path: /etc/apt/sources.list
+        regexp: 'repository-devel'
+        state: absent
+      become: true
     - name: Install Bacula Storage Daemon
       apt:
         name: bacula-sd
