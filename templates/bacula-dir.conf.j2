@@ -16,3 +16,64 @@ Catalog {
   dbuser = "{{ database_user }}"
   dbpassword = "{{ database_password }}"
 }
+
+FileSet {
+  Name = "Full Set"
+  Include {
+    Options {
+      signature = MD5
+      compression = GZIP
+    }
+    File = /etc
+    File = /home
+  }
+}
+
+Storage {
+  Name = File1
+  Address = {{ storage_ip }}
+  SDPort = 9103
+  Password = "{{ storage_password }}"
+  Device = FileStorage
+  Media Type = File1
+}
+
+Pool {
+  Name = File
+  Pool Type = Backup
+  Recycle = yes
+  AutoPrune = yes
+  Volume Retention = 365 days
+  Maximum Volume Bytes = 50G
+  Maximum Volumes = 100
+  LabelFormat = "Vol-"
+}
+
+Messages {
+  Name = Standard
+  mail = root@localhost = all, !skipped, !saved
+  console = all, !skipped, !saved
+  append = "/var/log/bacula/bacula.log" = all, !skipped
+}
+
+Job {
+  Name = "BackupClient1"
+  Type = Backup
+  Level = Full
+  Client = "{{ fd_name }}"   
+  FileSet = "Full Set"
+  Storage = File1
+  Pool = File
+  Messages = Standard
+}
+
+Client {
+  Name = "{{ fd_name }}"
+  Address = {{ client_ip }}
+  FDPort = 9102
+  Catalog = MyCatalog
+  Password = "{{ fd_password }}"
+  FileRetention = 30 days
+  JobRetention = 6 months
+  AutoPrune = yes
+}
