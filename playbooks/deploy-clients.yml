@@ -29,7 +29,13 @@
         line: 'execaps -c 0x1000 -- start-stop-daemon -c "$DAEMONUSER" --start'
         backup: yes
       notify: restart bacula-fd
-
+    - name: Create restore directory on clients
+      file:
+        path: /tmp/bacula-restores
+        state: directory
+        owner: bacula
+        group: bacula
+        mode: '0755'
     - name: Ensure Bacula File Daemon is running
       service:
         name: bacula-fd

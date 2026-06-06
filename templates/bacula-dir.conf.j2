@@ -67,6 +67,17 @@ Job {
   Messages = Standard
 }
 
+Job {
+  Name = "RestoreFiles"
+  Type = Restore
+  Client = "{{ client_name }}"
+  FileSet = "Full Set"
+  Storage = File1
+  Pool = File
+  Messages = Standard
+  Where = /tmp/bacula-restores
+}
+
 Client {
   Name = "{{ fd_name }}"
   Address = {{ client_ip }}
