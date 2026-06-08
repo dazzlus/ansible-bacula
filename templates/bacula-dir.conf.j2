@@ -5,9 +5,9 @@ Director {
   WorkingDirectory = "/var/lib/bacula"
   PidDirectory = "/run/bacula"
   Maximum Concurrent Jobs = 20
-  Password = "{{ console_password }}"
-  Messages = Daemon
-  DirAddress = 127.0.0.1
+  Password = "{{ director_password }}"
+  Messages = Standard
+  DirAddress = 0.0.0.0
 }
 
 Catalog {
@@ -70,7 +70,7 @@ Job {
 Job {
   Name = "RestoreFiles"
   Type = Restore
-  Client = "{{ client_name }}"
+  Client = "{{ fd_name }}"
   FileSet = "Full Set"
   Storage = File1
   Pool = File

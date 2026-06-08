@@ -4,12 +4,22 @@
   vars_files:
     - ../group_vars/all.yml
   tasks:
-    - name: Install Bacula Director and Console
+    - name: Preseed dbconfig-common to not install database
+      debconf:
+        name: bacula-director-pgsql
+        question: bacula-director-pgsql/dbconfig-install
+        vtype: boolean
+        value: false
+      become: true
+    - name: Install Bacula Director (non-interactive)
       apt:
         name:
           - bacula-director-pgsql
           - bacula-console
         state: present
+        update_cache: yes
+      environment:
+        DEBIAN_FRONTEND: noninteractive
 
     - name: Deploy bacula-dir.conf from template
       template:
@@ -19,7 +29,9 @@
         group: bacula
         mode: '0640'
       notify: restart bacula-director
-
+    - name: Reload systemd daemon
+      systemd:
+        daemon_reload: yes
     - name: Ensure Bacula Director is running
       service:
         name: bacula-director
